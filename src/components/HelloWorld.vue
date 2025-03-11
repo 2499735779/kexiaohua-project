@@ -2,14 +2,24 @@
   <div class="hello">
     <!-- 左侧花朵 -->
     <div class="flowers left">
-      <div v-for="n in 10" :key="'left-' + n" class="flower" :style="{ animationDelay: n * 0.3 + 's' }"></div>
+      <div
+        v-for="n in 10"
+        :key="'left-' + n"
+        class="flower"
+        :style="generateFlowerStyle('left', n)"
+      ></div>
     </div>
 
     <img src="@/assets/my-image.jpg" alt="Special Image" class="center-image"/>
 
     <!-- 右侧花朵 -->
     <div class="flowers right">
-      <div v-for="n in 10" :key="'right-' + n" class="flower" :style="{ animationDelay: n * 0.3 + 's' }"></div>
+      <div
+        v-for="n in 10"
+        :key="'right-' + n"
+        class="flower"
+        :style="generateFlowerStyle('right', n)"
+      ></div>
     </div>
 
     <h1>{{ msg }}</h1>
@@ -22,12 +32,25 @@
 <script>
 export default {
   name: 'HelloWorld',
-  data() {
+  data () {
     return {
-      msg: '想你了老婆子',
-    };
+      msg: '想你了老婆子'
+    }
   },
-};
+  methods: {
+    generateFlowerStyle (side, index) {
+      const randomStartY = Math.random() * 100; // 随机的垂直起始位置（0% 到 100%）
+      const randomRotation = Math.random() * 360; // 随机初始旋转角度
+      const delay = index * 0.3; // 每朵花的动画延迟
+
+      return {
+        top: `${randomStartY}%`,
+        transform: `rotate(${randomRotation}deg)`,
+        animationDelay: `${delay}s`
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -35,15 +58,15 @@ export default {
 .hello {
   text-align: center;
   position: relative;
-  overflow: hidden; /* 防止动画溢出页面 */
-  height: 100vh; /* 设置全屏高度 */
+  overflow: hidden;
+  height: 100vh;
 }
 
 .center-image {
   display: block;
   margin: 0 auto;
-  max-width: 20%; /* 将图片缩小到原来的1/5 */
-  z-index: 1; /* 确保图片在最前面 */
+  max-width: 20%;
+  z-index: 1;
 }
 
 h1 {
@@ -76,7 +99,7 @@ h1 {
   position: absolute;
   width: 40px;
   height: 40px;
-  background-image: url('@/assets/flower.jpg'); /* 确保路径正确 */
+  background-image: url('../assets/flower.jpg'); /* 修正路径 */
   background-size: contain;
   background-repeat: no-repeat;
   opacity: 0;
@@ -96,44 +119,4 @@ h1 {
     opacity: 0;
   }
 }
-
-/* 飞舞动画路径 */
-.left .flower {
-  animation: fly-left 5s linear infinite;
-}
-
-.right .flower {
-  animation: fly-right 5s linear infinite;
-}
-
-@keyframes fly-left {
-  0% {
-    transform: translate(-100%, 100%) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(0, 50%) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(50%, 0) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes fly-right {
-  0% {
-    transform: translate(100%, 100%) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(0, 50%) rotate(180deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, 0) rotate(360deg);
-    opacity: 0;
-  }
-}
 </style>
-
